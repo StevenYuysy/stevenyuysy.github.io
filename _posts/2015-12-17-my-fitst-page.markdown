@@ -1,5 +1,5 @@
 ---
-layout:_post
+layout: post
 ---
 # 小博客
 * 这是我的小博客
