@@ -19,6 +19,7 @@ categories: jekyll update
 
 # 如何设计一个可执行的计划
 (原文来自<a href="http://mp.weixin.qq.com/s?__biz=MjM5NTE5NzUwMA==&mid=401259948&idx=1&sn=83dfea35bd6b03cd24fa62a22fd7b10b&scene=0#wechat_redirect">如何设计你的2016年年度计划</a>)
+
 > * 选择一项可行的目标就好
 * 设定目标的SMART原则
   * Specific 具体。
