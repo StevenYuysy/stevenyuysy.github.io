@@ -1,10 +1,86 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <title>None</title>
+<meta charset="utf-8">
+<title>余思烨个人简历</title>
+<link rel="stylesheet" href="http://cdn.bootcss.com/fullPage.js/2.7.6/jquery.fullPage.css">
+<style>
+  .img img{
+  	border-radius: 200px;
+  }
+  .intro {
+    position: absolute;
+  	width: inherit;
+  }
+  .section {
+    text-align: center;
+    font: 5em;
+    font-family: font-family: Helvetica, Tahoma, Arial, STXihei, "华文细黑", "Microsoft YaHei", "微软雅黑", SimSun, "宋体", Heiti, "黑体", sans-serif;
+    color: #fff;
+  }
+  .slide p{
+  	margin:0 3em;
+  }
+  .slide p span{
+  	display: block;
+  }
+</style>
+<script src="http://cdn.bootcss.com/jquery/3.0.0-alpha1/jquery.min.js"></script>
+<script src="http://cdn.uedsc.com/particleground/1.1.0/jquery.particleground.min.js"></script>
+<script src="http://cdn.bootcss.com/fullPage.js/2.7.6/jquery.fullPage.js"></script>
+<script>
+$(document).ready(function(){
+	$('#slide').fullpage({
+		sectionsColor: ['#1bbc9b', '#0F9AA5', '#1bbc9b']
+	});
+});
+</script>
 </head>
 <body>
-  Hello, world!
+<div id="slide">
+	<div class="section star">
+		<div class="intro">
+		<div class="img">
+			<img src="img/img.jpg" alt="cv">
+		</div>
+		<h3>余思烨</h3>
+		<p>希望能加入成为您的前端实习生！</p>
+		<p>383800747@qq.com</p>
+	</div>
+	</div>
+	<div class="section star">
+	  <h3>web技能</h3>
+    <p>
+      <ul>
+        <li>前端技术：HTML/CSS/JavaScript</li>
+        <li>前端框架：Bootstrap/jQuery</li>
+        <li>前端工具：Gulp/SaSS/NPM</li>
+        <li>版本管理工具：Git</li>
+      </ul>
+    </p>
+	</div>
+	<div class="section star">
+		<h3>项目经历</h3>
+		<p>
+			<ul>
+			  <li>暨南大学网络中心前端开发</li>
+			  <li>JNU life工作室</li>
+			  <li>网易云课堂</li>
+			  <li>百度前端技术学院（IFE）</li>
+			</ul>
+		</p>
+	</div>
+</div>
 </body>
+<script>
+$(document).ready(function() {
+  $('.star').particleground({
+    dotColor: '#148971',
+    lineColor: '#148971'
+  });
+  $('.intro').css({
+    'margin-top': -($('.intro').height() / 2)
+  });
+});
+</script>
 </html>
