@@ -19,9 +19,6 @@
     * 2016年春季班，目前完成了HTML、CSS以及JavaScript的初步学习，包括 三栏式布局，定位和居中，产品官网设计稿还原，响应式布局，js可视化等任务。
     * https://heyjax.github.io
 
-# 作品
-*
-
 # 技能清单
 * 前端技术：HTML/CSS/JavaScript
 * 前端框架：Bootstrap/jQuery
