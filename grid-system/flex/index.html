@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Flex Grid System</title>
+        <link rel="stylesheet" href="dist/main.css">
+        <style media="screen">
+            /* beautify box */
+            .box {
+                height: 2rem;
+                line-height: 2rem;
+                text-align: center;
+                vertical-align: middle;
+                border-radius: .5rem;
+                background-color: #eee;
+            }
+        </style>
+    </head>
+    <body>
+
+        <div class="container">
+            <!-- Auto width -->
+            <div class="row">
+                <div class="col-sm">
+                    <h3>Auto width</h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm">
+                    <div class="box">
+                        1/2
+                    </div>
+                </div>
+                <div class="col-sm">
+                    <div class="box">
+                        1/2
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm">
+                    <div class="box">
+                        1/3
+                    </div>
+                </div>
+                <div class="col-sm">
+                    <div class="box">
+                        1/3
+                    </div>
+                </div>
+                <div class="col-sm">
+                    <div class="box">
+                        1/3
+                    </div>
+                </div>
+            </div>
+            <!-- Fix size width -->
+            <div class="row">
+                <div class="col-sm">
+                    <h3>Fix size width</h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 col-sm-4">
+                    <div class="box">
+                        col-sm-6 col-sm-4
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-4">
+                    <div class="box">
+                        col-sm-6 col-sm-4
+                    </div>
+                </div>
+                <div class="col-md-12 col-sm-4">
+                    <div class="box">
+                        col-sm-12 col-sm-4
+                    </div>
+                </div>
+            </div>
+            <!-- Resource code -->
+            <div class="row">
+                <div class="col-sm">
+                    <h3>Resouece code</h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm">
+                    <a href="#">Github</a>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
