@@ -1,0 +1,6 @@
+:root {
+    --grid-columns: 12;
+    --grid-gutters: 10;
+    --sm-break-point: 480px;
+    --md-break-point: 769px;
+}
