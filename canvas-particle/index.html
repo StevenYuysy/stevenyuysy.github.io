@@ -8,123 +8,21 @@
                 background-color: #222;
             }
         </style>
+        <script src="particle.js" charset="utf-8"></script>
     </head>
     <body>
         <canvas id="canvas" width="600" height="600"></canvas>
         <script type="text/javascript">
-            var canvas = document.getElementById('canvas');
-            var ctx = canvas.getContext('2d');
-            var img = new Image();
-            var image = {};
-            var particles = [];
-            img.onload = function() {
-                image.x = 100;
-                image.y = 100;
-                image.w = img.width;
-                image.h = img.height;
-                ctx.drawImage(img, 100, 100, image.w, image.h);
-                image.imageData = ctx.getImageData(100, 100, image.w, image.h);
-
-                calc();
-
-                draw();
-            }
-            img.src = 'isux.png';
-
-
-            function getColor(pos) {
-                var data = image.imageData.data;
-                var str = 'rgb(' + data[pos] + ',' + data[pos+1] + ',' + data[pos+2] +')';
-                return str;
-            }
-
-            //计算并保存坐标
-            function calc() {
-                var len = image.imageData.length;
-                //只保存100行，100列的像素值
-                var cols = 150,
-                    rows = 150;
-                //设成150行，100列后每个单元的宽高
-                var s_width = parseInt(image.w/cols),
-                    s_height = parseInt(image.h/rows);
-                var pos = 0; //数组中的位置
-                var par_x, par_y;  //粒子的x,y坐标
-                var data = image.imageData.data;  //像素值数组
-                for(var i = 0; i < cols; i++) {
-                    for(var j = 0; j < rows; j++) {
-                        //计算(i,j)在数组中的R的坐标值
-                        pos = (j*s_height*image.w + i*s_width)*4;
-                        //判断像素透明度值是否符合要求
-                        if(data[pos+3] > 100){
-                            var particle = {
-                                //x,y值都随机一下
-                                x0: Math.random()*600,
-                                y0: Math.random()*600,
-                                x1: image.x + i*s_width + (Math.random() - 0.5)*20,
-                                y1: image.y + j*s_height + (Math.random() - 0.5)*20,
-                                currTime: 0,
-                                delay: Math.random()*100,
-                                interval: 2000,
-                                duration: 2000,
-                                count: 0,
-                                fillStyle: getColor(pos)
-                            }
-                            particles.push(particle);
-                        }
-                    }
-                }
-            }
-
-            function easeOutBounce(t, b, c, d) {
-        		if ((t/=d) < (1/2.75)) {
-        			return c*(7.5625*t*t) + b;
-        		} else if (t < (2/2.75)) {
-        			return c*(7.5625*(t-=(1.5/2.75))*t + .75) + b;
-        		} else if (t < (2.5/2.75)) {
-        			return c*(7.5625*(t-=(2.25/2.75))*t + .9375) + b;
-        		} else {
-        			return c*(7.5625*(t-=(2.625/2.75))*t + .984375) + b;
-        		}
-        	}
-
-            function easeInOutQuad(t, b, c, d) {
-        		if ((t/=d/2) < 1) return c/2*t*t + b;
-        		return -c/2 * ((--t)*(t-2) - 1) + b;
-        	}
-
-            function draw() {
-                ctx.clearRect(0, 0, 600, 600);
-                var len = particles.length;
-                var cur_particle;
-                var cur_time = 0;
-                var duration = 0;
-                var cur_dalay = 0;
-                for (var i = 0; i < len; i++) {
-                    cur_particle = particles[i];
-                    if (cur_particle.count++ > cur_particle.delay) {
-                        ctx.fillStyle = cur_particle.fillStyle;
-
-                        cur_time = cur_particle.currTime;
-                        duration = cur_particle.duration;
-                        cur_delay = cur_particle.interval;
-
-                        if (particles[len-1].duration < particles[len-1].currTime) {
-                            cancelAnimationFrame(requestId);
-                            return;
-                        } else if (cur_time < duration) {
-                            cur_x = easeInOutQuad(cur_time, cur_particle.x0, cur_particle.x1-cur_particle.x0, duration);
-                            cur_y = easeInOutQuad(cur_time, cur_particle.y0, cur_particle.y1-cur_particle.y0, duration);
-                            ctx.fillRect(cur_x, cur_y, 1, 1);
-                            cur_particle.currTime+=100;
-                        } else {
-                            ctx.fillRect(cur_particle.x1, cur_particle.y1, 1, 1);
-                        }
-                    }
-                }
-                requestId = requestAnimationFrame(draw);
-            }
-
-
+            var particle = new Particle({
+                selector: '#canvas',
+                url: 'isux.png',
+                startX: 150,
+                startY: 300,
+                delay: 100,
+                duration: 1000,
+                offset: 1,
+                easing: 'easeInOutBack'
+            })
 
         </script>
     </body>
