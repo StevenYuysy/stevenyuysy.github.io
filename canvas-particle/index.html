@@ -7,19 +7,29 @@
             html {
                 background-color: #222;
             }
+            div.container {
+                display: flex;
+                justify-content: center;
+                align-content: center;
+            }
+
         </style>
         <script src="particle.js" charset="utf-8"></script>
     </head>
     <body>
-        <canvas id="canvas" width="600" height="600"></canvas>
+        <div class="container">
+            <canvas id="canvas" width="600" height="600"></canvas>
+        </div>
         <script type="text/javascript">
             var particle = new Particle({
                 selector: '#canvas',
                 url: 'isux.png',
-                startX: 150,
-                startY: 300,
+                startX: 250,
+                startY: 500,
+                imgX: 100,
+                imgY: 100,
                 delay: 100,
-                duration: 1000,
+                duration: 2000,
                 offset: 1,
                 easing: 'easeInOutBack'
             })

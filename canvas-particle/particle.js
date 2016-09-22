@@ -1,4 +1,4 @@
-// ISSUE: 不可以清楚画布，不可以多次点击更换不同效果，不可以根据点击执行动画
+// ISSUE: 不可以清楚画布，不可以多次点击更换不同效果
 
 (function() {
     'use strict';
@@ -8,9 +8,11 @@
      */
 
     var canvas;
+    var animateID;
     var image = {};
     var particles = [];
     var imageState = false;
+    var animation = false;
     var options = {
         cols: 100,              // The number of the columns that devide images.
         rows: 100,              // The number of the rows that devide images.
@@ -41,17 +43,23 @@
         options.duration = opts.duration || options.duration;
         options.easing = opts.easing || options.easing;
         options.offset = opts.offset || options.offset;
+
+        this.animated = false;
+
         var img = new Image();
+        var self = this;
         img.onload = function() {
             imageState = true;
             image.w = img.width;
             image.h = img.height;
             canvas.ctx.drawImage(
-                img, options.startX, options.startY, image.w, image.h);
+                img, options.imgX, options.imgY, image.w, image.h);
             image.imageData = canvas.ctx.getImageData(
-                options.startX, options.startY, image.w, image.h);
+                options.imgX, options.imgY, image.w, image.h);
+            self.draw();
         };
         img.src = opts.url;
+
     };
 
 
@@ -106,36 +114,51 @@
     }
 
     function draw() {
+        canvas.ctx.clearRect(0, 0, canvas.width, canvas.height);
+        var len = particles.length;
+        for (var i = 0; i < len; i++) {
+            var cur_particle = particles[i];
+            canvas.ctx.fillStyle = cur_particle.fillStyle;
+            canvas.ctx.fillRect(cur_particle.x1, cur_particle.y1, 1, 1);
+        }
+    }
+
+    function timer() {
+        setTimeout(function(){
+            console.log('finish');
+            cancelAnimationFrame(animateID);
+            animation = false;
+        },options.delay*20 + options.duration);
+    }
+
+    function animate() {
         // Clear canvas
-        canvas.ctx.clearRect(options.imgX, options.imgY, canvas.width, canvas.height);
+        canvas.ctx.clearRect(0, 0, canvas.width, canvas.height);
         var len = particles.length;
         var cur_particle;
         var cur_time = 0;
         var duration = 0;
         var cur_x, cur_y;
-        var animate = getAniamte();
+        var ease = getEaseFuction();
         for (var i = 0; i < len; i++) {
             cur_particle = particles[i];
             if (cur_particle.count++ > cur_particle.delay) {
                 canvas.ctx.fillStyle = cur_particle.fillStyle;
-
                 cur_time = cur_particle.currTime;
                 duration = cur_particle.duration;
 
-                if (particles[len-1].duration < particles[len-1].currTime) {
-                    cancelAnimationFrame(requestId);
-                    return;
-                } else if (cur_time < duration) {
-                    cur_x = animate(cur_time, cur_particle.x0, cur_particle.x1-cur_particle.x0, duration);
-                    cur_y = animate(cur_time, cur_particle.y0, cur_particle.y1-cur_particle.y0, duration);
+                if (cur_time < duration) {
+                    animation = true;
+                    cur_x = ease(cur_time, cur_particle.x0, cur_particle.x1-cur_particle.x0, duration);
+                    cur_y = ease(cur_time, cur_particle.y0, cur_particle.y1-cur_particle.y0, duration);
                     canvas.ctx.fillRect(cur_x, cur_y, 1, 1);
-                    cur_particle.currTime+=10;
+                    cur_particle.currTime+=20;
                 } else {
                     canvas.ctx.fillRect(cur_particle.x1, cur_particle.y1, 1, 1);
                 }
             }
         }
-        var requestId = requestAnimationFrame(draw);
+        animateID = requestAnimationFrame(animate);
     }
 
     /**
@@ -145,7 +168,8 @@
     Particle.prototype.draw = function () {
         if (imageState) {
             if (particles) calc();
-            draw();
+            animate();
+            timer();
         }
     };
 
@@ -154,11 +178,7 @@
      */
 
     Particle.prototype.animate = function() {
-
-    };
-
-    Particle.prototype.clear = function() {
-        canvas.ctx.clearRect(options.imgX, options.imgY, canvas.width, canvas.height);
+        return animation;
     };
 
     /**
@@ -188,7 +208,7 @@
         return c/2*((t-=2)*t*(((s*=(1.525))+1)*t + s) + 2) + b;
     }
 
-    function getAniamte() {
+    function getEaseFuction() {
         switch (options.easing) {
         case 'easeInOutQuad':
             return easeInOutQuad;
