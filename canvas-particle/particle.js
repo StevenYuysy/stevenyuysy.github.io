@@ -4,7 +4,7 @@
     'use strict';
 
     /**
-     * Private varaibles
+     * @private varaibles
      */
 
     var canvas;
@@ -47,7 +47,6 @@
         this.animated = false;
 
         var img = new Image();
-        var self = this;
         img.onload = function() {
             imageState = true;
             image.w = img.width;
@@ -56,12 +55,9 @@
                 img, options.imgX, options.imgY, image.w, image.h);
             image.imageData = canvas.ctx.getImageData(
                 options.imgX, options.imgY, image.w, image.h);
-            self.draw();
         };
         img.src = opts.url;
-
     };
-
 
     /**
      * Get RGB values of specfic `pos` in image `data`.
@@ -71,7 +67,8 @@
      */
 
     function getColor(pos, data) {
-        var str = 'rgb(' + data[pos] + ',' + data[pos+1] + ',' + data[pos+2] +')';
+        var str = 'rgb(' + data[pos] + ',' + data[pos+1] +
+            ',' + data[pos+2] +')';
         return str;
     }
 
@@ -97,7 +94,7 @@
                     var particle = {
                         x0: options.startX,
                         y0: options.startY,
-                        x1: options.imgX+ i*s_width + (
+                        x1: options.imgX + i*s_width + (
                             Math.random() - 0.5)*options.offset*10,
                         y1: options.imgY + j*s_height + (
                             Math.random() - 0.5)*options.offset*10,
@@ -113,20 +110,29 @@
         }
     }
 
-    function draw() {
-        canvas.ctx.clearRect(0, 0, canvas.width, canvas.height);
-        var len = particles.length;
-        for (var i = 0; i < len; i++) {
-            var cur_particle = particles[i];
-            canvas.ctx.fillStyle = cur_particle.fillStyle;
-            canvas.ctx.fillRect(cur_particle.x1, cur_particle.y1, 1, 1);
-        }
-    }
+    // function draw() {
+    //     canvas.ctx.clearRect(0, 0, canvas.width, canvas.height);
+    //     var len = particles.length;
+    //     for (var i = 0; i < len; i++) {
+    //         var cur_particle = particles[i];
+    //         canvas.ctx.fillStyle = cur_particle.fillStyle;
+    //         canvas.ctx.fillRect(cur_particle.x1, cur_particle.y1, 1, 1);
+    //     }
+    // }
+
+    /**
+     * @private
+     * Cheking the animation time and cancel it.
+     */
 
     function timer() {
         setTimeout(function(){
             console.log('finish');
             cancelAnimationFrame(animateID);
+            particles.forEach(function(ele) {
+                ele.count = 0;
+                ele.currTime = 0;
+            });
             animation = false;
         },options.delay*20 + options.duration);
     }
@@ -149,8 +155,10 @@
 
                 if (cur_time < duration) {
                     animation = true;
-                    cur_x = ease(cur_time, cur_particle.x0, cur_particle.x1-cur_particle.x0, duration);
-                    cur_y = ease(cur_time, cur_particle.y0, cur_particle.y1-cur_particle.y0, duration);
+                    cur_x = ease(cur_time, cur_particle.x0,
+                        cur_particle.x1-cur_particle.x0, duration);
+                    cur_y = ease(cur_time, cur_particle.y0,
+                        cur_particle.y1-cur_particle.y0, duration);
                     canvas.ctx.fillRect(cur_x, cur_y, 1, 1);
                     cur_particle.currTime+=20;
                 } else {
@@ -162,15 +170,18 @@
     }
 
     /**
-     * Start drawing the image on canvas
+     * Start drawing the image on canvas.
+     * @param {String} ease - The ease function in animation.
      */
 
-    Particle.prototype.draw = function () {
+    Particle.prototype.draw = function(ease) {
+        if (ease) options.easing = ease;
         if (imageState) {
-            if (particles) calc();
+            if (!particles.length) calc();
             animate();
             timer();
         }
+        // console.log(particles.length);
     };
 
     /**
@@ -186,6 +197,10 @@
      */
     Particle.prototype.setImg = function () {
 
+    };
+
+    Particle.prototype.clear = function() {
+        canvas.ctx.clearRect(0, 0, canvas.width, canvas.height);
     };
 
     /**
@@ -215,7 +230,8 @@
         case 'easeInOutBack':
             return easeInOutBack;
         default:
-            throw new Error('Not available animate function, please select another easing function.');
+            throw new Error('Not available animate function,' +
+            ' please select another easing function.');
         }
     }
 
