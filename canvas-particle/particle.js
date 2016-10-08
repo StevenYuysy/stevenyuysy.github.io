@@ -1,5 +1,3 @@
-// ISSUE: 不可以清楚画布，不可以多次点击更换不同效果
-
 (function() {
     'use strict';
 
